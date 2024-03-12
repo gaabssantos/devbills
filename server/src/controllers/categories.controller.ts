@@ -1,45 +1,39 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { CategoriesRepository } from '../database/repositories/categories.repository';
-import { CategoryModel } from '../database/schemas/categories.schema';
-import { CreateCateogryDTO } from '../dtos/categories.dto';
+import { CreateCategoryDTO } from '../dtos/categories.dto';
 import { CategoriesService } from '../services/categories.service';
 
 export class CategoriesController {
-  async create(
-    req: Request<unknown, unknown, CreateCateogryDTO>,
+  constructor(private categoriesService: CategoriesService) {}
+
+  create = async (
+    req: Request<unknown, unknown, CreateCategoryDTO>,
     res: Response,
     next: NextFunction,
-  ) {
+  ) => {
     try {
       const { title, color } = req.body;
 
-      const repository = new CategoriesRepository(CategoryModel);
-      const service = new CategoriesService(repository);
-
-      const category = await service.create({ title, color });
+      const category = await this.categoriesService.create({ title, color });
 
       return res.status(StatusCodes.CREATED).json(category);
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  async index(
-    _: Request<unknown, unknown, CreateCateogryDTO>,
+  index = async (
+    _: Request<unknown, unknown, CreateCategoryDTO>,
     res: Response,
     next: NextFunction,
-  ) {
+  ) => {
     try {
-      const repository = new CategoriesRepository(CategoryModel);
-      const service = new CategoriesService(repository);
-
-      const categories = await service.index();
+      const categories = await this.categoriesService.index();
 
       return res.status(StatusCodes.OK).json(categories);
     } catch (err) {
       next(err);
     }
-  }
+  };
 }

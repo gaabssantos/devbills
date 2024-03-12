@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export type CreateCateogryDTO = {
+export type CreateCategoryDTO = {
   title: string;
   color: string;
 };
