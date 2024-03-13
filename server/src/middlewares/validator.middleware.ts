@@ -15,7 +15,7 @@ type ValidateParams = {
 };
 
 export function validator(params: ValidateParams) {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _: Response, next: NextFunction) => {
     const result = z.object(params.schema).safeParse(req[params.type]);
 
     if (!result.success) {

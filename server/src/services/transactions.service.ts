@@ -8,7 +8,7 @@ import { AppError } from '../errors/app.error';
 
 export class TransactionsService {
   constructor(
-    private transictionsRepository: TransactionsRepository,
+    private transactionsRepository: TransactionsRepository,
     private categoriesRepository: CategoriesRepository,
   ) {}
 
@@ -34,7 +34,7 @@ export class TransactionsService {
     });
 
     const createdTransaction =
-      await this.transictionsRepository.create(transaction);
+      await this.transactionsRepository.create(transaction);
 
     return createdTransaction;
   }
