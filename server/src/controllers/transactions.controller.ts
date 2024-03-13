@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { CreateCategoryDTO } from '../dtos/categories.dto';
 import {
   CreateTransactionDTO,
   GetDashboardDTO,
   IndexTransactionDTO,
+  GetFinancialEvolutionDTO,
 } from '../dtos/transactions.dto';
 import { TransactionsService } from '../services/transactions.service';
 
@@ -64,6 +64,23 @@ export class TransactionsController {
       const result = await this.transactionsService.getDashboard({
         beginDate,
         endDate,
+      });
+
+      return res.status(StatusCodes.OK).json(result);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  getFinancialEvolution = async (
+    req: Request<unknown, unknown, unknown, GetFinancialEvolutionDTO>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { year } = req.query;
+      const result = await this.transactionsService.getFinancialEvolution({
+        year,
       });
 
       return res.status(StatusCodes.OK).json(result);

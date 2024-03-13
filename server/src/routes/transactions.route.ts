@@ -4,6 +4,7 @@ import { TransactionsController } from '../controllers/transactions.controller';
 import {
   createTransactionSchema,
   getDashboardSchema,
+  getFinancialEvolutionSchema,
   indexTransactionSchema,
 } from '../dtos/transactions.dto';
 import { TransactionsFactory } from '../factories/transactions.factory';
@@ -13,6 +14,15 @@ export const transactionsRoutes = Router();
 
 const controller = new TransactionsController(
   TransactionsFactory.getServiceInstance(),
+);
+
+transactionsRoutes.post(
+  '/',
+  validator({
+    schema: createTransactionSchema,
+    type: ParamsType.BODY,
+  }),
+  controller.create,
 );
 
 transactionsRoutes.get(
@@ -33,11 +43,11 @@ transactionsRoutes.get(
   controller.getDashboard,
 );
 
-transactionsRoutes.post(
-  '/',
+transactionsRoutes.get(
+  '/financial-evolution',
   validator({
-    schema: createTransactionSchema,
-    type: ParamsType.BODY,
+    schema: getFinancialEvolutionSchema,
+    type: ParamsType.QUERY,
   }),
-  controller.create,
+  controller.getFinancialEvolution,
 );
