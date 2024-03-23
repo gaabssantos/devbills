@@ -1,10 +1,11 @@
+import { Home } from './screens/home';
 import GlobalStyles from './styles/global';
 
 export function App() {
   return (
     <>
       <GlobalStyles />
-      <h1>Devbills</h1>
+      <Home />
     </>
   );
 }
