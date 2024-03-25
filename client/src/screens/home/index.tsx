@@ -5,6 +5,7 @@ import { Input } from '../../components/input';
 import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
 import { Filters, Header, InputGroup, Main, Section } from './styles';
+import { ButtonIcon } from '../../components/button-icon';
 
 export function Home() {
   return (
@@ -37,6 +38,7 @@ export function Home() {
                 label="Fim"
                 placeholder="dd/mm/aaaa"
               />
+              <ButtonIcon />
             </InputGroup>
           </Filters>
         </Section>
