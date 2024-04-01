@@ -11,6 +11,7 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["react-refresh", "prettier", "eslint-plugin-import-helpers"],
   "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
     "import-helpers/order-imports": [
       "warn",
       {
