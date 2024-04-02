@@ -7,7 +7,7 @@ import { errorHandler } from './middlewares/error-handler.middleware';
 import { routes } from './routes';
 
 setupMongo().then(() => {
-  const port = 4444;
+  const port = 3333;
 
   const app = express();
 
