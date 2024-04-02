@@ -46,11 +46,15 @@ export function Home() {
     resolver: zodResolver(transactionsFilterSchema),
   });
 
-  const { transactions, fetchTransactions } = useFetchAPI();
+  const { transactions, dashboard, fetchTransactions, fetchDashboard } =
+    useFetchAPI();
 
   useEffect(() => {
+    const { beginDate, endDate } = transactionsFilterForm.getValues();
+
+    fetchDashboard({ beginDate, endDate });
     fetchTransactions(transactionsFilterForm.getValues());
-  }, [fetchTransactions, transactionsFilterForm]);
+  }, [fetchTransactions, transactionsFilterForm, fetchDashboard]);
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryProps | null>(null);
@@ -73,6 +77,16 @@ export function Home() {
       await fetchTransactions(data);
     },
     [fetchTransactions],
+  );
+
+  const onSubmitDashboard = useCallback(
+    async (data: TransactionFilterData) => {
+      const { beginDate, endDate } = data;
+
+      await fetchDashboard({ beginDate, endDate });
+      await fetchTransactions(data);
+    },
+    [fetchDashboard, fetchTransactions],
   );
 
   return (
@@ -112,19 +126,25 @@ export function Home() {
                 {...transactionsFilterForm.register('endDate')}
               />
               <ButtonIcon
-                onClick={transactionsFilterForm.handleSubmit(
-                  onSubmitTransactions,
-                )}
+                onClick={transactionsFilterForm.handleSubmit(onSubmitDashboard)}
               />
             </InputGroup>
           </Filters>
           <Balance>
-            <Card variant="balance" title="Saldo" amount={10000000}></Card>
-            <Card variant="revenues" title="Receitas" amount={10000000}></Card>
+            <Card
+              variant="balance"
+              title="Saldo"
+              amount={dashboard?.balance?.balance || 0}
+            ></Card>
+            <Card
+              variant="revenues"
+              title="Receitas"
+              amount={dashboard?.balance?.incomes || 0}
+            ></Card>
             <Card
               variant="outgoing"
               title="Gastos"
-              amount={10000000 * -1}
+              amount={dashboard?.balance?.expenses * -1 || 0}
             ></Card>
           </Balance>
           <ChartContainer>
@@ -135,7 +155,10 @@ export function Home() {
               />
             </header>
             <ChartContent>
-              <CategoriesPieChart onClick={handleSelectCategory} />
+              <CategoriesPieChart
+                expenses={dashboard.expenses}
+                onClick={handleSelectCategory}
+              />
             </ChartContent>
           </ChartContainer>
           <ChartContainer>
