@@ -51,11 +51,17 @@ export function CreateCategoryDialog() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <Input
-              {...register('title')}
               label="Nome"
               placeholder="Nome da categoria..."
+              {...register('title')}
+              error={formState.errors?.title?.message}
             />
-            <Input {...register('color')} label="Cor" type="color" />
+            <Input
+              label="Cor"
+              type="color"
+              {...register('color')}
+              error={formState.errors?.color?.message}
+            />
           </div>
           <footer>
             <Button onClick={handleClose} variant="outline" type="button">
