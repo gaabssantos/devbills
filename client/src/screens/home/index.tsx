@@ -19,7 +19,6 @@ import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
 import { Transaction } from '../../components/transaction';
 import { useFetchAPI } from '../../hooks/useFetchAPI';
-import { FinancialEvolution } from '../../services/api-types';
 import { transactionsFilterSchema } from '../../validators/schemas';
 import {
   FinancialEvolutionFilterData,
