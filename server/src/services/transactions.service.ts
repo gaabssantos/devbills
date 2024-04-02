@@ -6,7 +6,7 @@ import {
   CreateTransactionDTO,
   GetDashboardDTO,
   IndexTransactionDTO,
-  getFinancialEvolutionDTO,
+  GetFinancialEvolutionDTO,
 } from '../dtos/transactions.dto';
 import { Balance } from '../entities/balance.entity';
 import { Expense } from '../entities/expense.entity';
@@ -81,7 +81,7 @@ export class TransactionsService {
 
   async getFinancialEvolution({
     year,
-  }: getFinancialEvolutionDTO): Promise<Balance[]> {
+  }: GetFinancialEvolutionDTO): Promise<Balance[]> {
     const financialEvolution =
       await this.transactionsRepository.getFinancialEvolution({ year });
 

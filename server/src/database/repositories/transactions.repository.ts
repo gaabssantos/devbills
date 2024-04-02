@@ -1,7 +1,7 @@
 import {
   GetDashboardDTO,
   IndexTransactionDTO,
-  getFinancialEvolutionDTO,
+  GetFinancialEvolutionDTO,
 } from '../../dtos/transactions.dto';
 import { Balance } from '../../entities/balance.entity';
 import { Expense } from '../../entities/expense.entity';
@@ -103,7 +103,7 @@ export class TransactionsRepository {
           $sum: '$income',
         },
         expenses: {
-          $sum: '$expenses',
+          $sum: '$expense',
         },
       })
       .addFields({
@@ -149,7 +149,7 @@ export class TransactionsRepository {
 
   async getFinancialEvolution({
     year,
-  }: getFinancialEvolutionDTO): Promise<Balance[]> {
+  }: GetFinancialEvolutionDTO): Promise<Balance[]> {
     const aggregate = this.model.aggregate<Balance>();
 
     const result = await aggregate
