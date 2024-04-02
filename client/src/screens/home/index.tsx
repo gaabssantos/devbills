@@ -19,8 +19,12 @@ import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
 import { Transaction } from '../../components/transaction';
 import { useFetchAPI } from '../../hooks/useFetchAPI';
+import { FinancialEvolution } from '../../services/api-types';
 import { transactionsFilterSchema } from '../../validators/schemas';
-import { TransactionFilterData } from '../../validators/types';
+import {
+  FinancialEvolutionFilterData,
+  TransactionFilterData,
+} from '../../validators/types';
 import {
   Aside,
   Balance,
@@ -48,15 +52,34 @@ export function Home() {
     resolver: zodResolver(transactionsFilterSchema),
   });
 
-  const { transactions, dashboard, fetchTransactions, fetchDashboard } =
-    useFetchAPI();
+  const financialEvolutionFilterForm = useForm<FinancialEvolutionFilterData>({
+    defaultValues: {
+      year: dayjs().get('year').toString(),
+    },
+  });
+
+  const {
+    transactions,
+    dashboard,
+    financialEvolution,
+    fetchTransactions,
+    fetchFinancialEvolution,
+    fetchDashboard,
+  } = useFetchAPI();
 
   useEffect(() => {
     const { beginDate, endDate } = transactionsFilterForm.getValues();
 
     fetchDashboard({ beginDate, endDate });
     fetchTransactions(transactionsFilterForm.getValues());
-  }, [fetchTransactions, transactionsFilterForm, fetchDashboard]);
+    fetchFinancialEvolution(financialEvolutionFilterForm.getValues());
+  }, [
+    fetchTransactions,
+    transactionsFilterForm,
+    financialEvolutionFilterForm,
+    fetchFinancialEvolution,
+    fetchDashboard,
+  ]);
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryProps | null>(null);
@@ -93,6 +116,13 @@ export function Home() {
       await fetchTransactions(data);
     },
     [fetchDashboard, fetchTransactions],
+  );
+
+  const onSubmitFinancialEvolution = useCallback(
+    async (data: FinancialEvolutionFilterData) => {
+      await fetchFinancialEvolution(data);
+    },
+    [fetchFinancialEvolution],
   );
 
   return (
@@ -190,12 +220,19 @@ export function Home() {
                   variant="dark"
                   label="Ano"
                   placeholder="aaaa"
+                  {...financialEvolutionFilterForm.register('year')}
                 />
-                <ButtonIcon />
+                <ButtonIcon
+                  onClick={financialEvolutionFilterForm.handleSubmit(
+                    onSubmitFinancialEvolution,
+                  )}
+                />
               </ChartAction>
             </header>
             <ChartContent>
-              <FinancialEvolutionBarChart />
+              <FinancialEvolutionBarChart
+                financialEvolution={financialEvolution}
+              />
             </ChartContent>
           </ChartContainer>
         </Section>
