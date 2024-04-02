@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useFetchAPI } from '../../hooks/useFetchAPI';
+import { createTransactionSchmea } from '../../validators/schemas';
 import { CreateTransactionData } from '../../validators/types';
 import { Button } from '../button';
 import { Dialog } from '../dialog';
@@ -19,10 +20,9 @@ import {
   RadioForm,
   RadioGroup,
 } from './styles';
-import { createTransactionSchmea } from '../../validators/schemas';
 
 export function CreateTransactionDialog() {
-  const { categories, fetchCategories } = useFetchAPI();
+  const { categories, fetchCategories, createTransaction } = useFetchAPI();
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -49,9 +49,13 @@ export function CreateTransactionDialog() {
     setOpen(false);
   }, [reset]);
 
-  const onSubmit = useCallback(() => {
-    handleClose();
-  }, [handleClose]);
+  const onSubmit = useCallback(
+    async (data: CreateTransactionData) => {
+      await createTransaction(data);
+      handleClose();
+    },
+    [handleClose, createTransaction],
+  );
 
   return (
     <Dialog
