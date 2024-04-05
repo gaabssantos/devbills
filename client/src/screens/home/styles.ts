@@ -25,6 +25,14 @@ export const Main = styled.main`
   gap: 0.75rem;
   width: 100%;
   padding: 0 1.5rem 1.5rem 1.5rem;
+
+  @media (max-width: 600px) {
+    display: block;
+  }
+
+  @media (min-width: 601px) and (max-width: 800px) {
+    display: block;
+  }
 `;
 
 export const Section = styled.section`
@@ -53,6 +61,16 @@ export const Balance = styled.div`
   align-items: center;
   gap: 0.75rem;
   width: 100%;
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 601px) and (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const ChartContainer = styled.div`
@@ -89,6 +107,7 @@ export const Aside = styled.aside`
   padding: 1rem;
   border-radius: 0.25rem;
   background-color: ${theme.colors.dark};
+  margin-top: 0.75rem;
 
   header {
     display: flex;
