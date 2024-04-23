@@ -14,7 +14,7 @@ setupMongo().then(() => {
   app.use(express.json());
   app.use(
     cors({
-      origin: 'https://devbills.vercel.app/',
+      origin: process.env.FRONT_URL,
     }),
   );
   app.use(routes);
