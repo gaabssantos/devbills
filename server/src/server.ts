@@ -11,12 +11,16 @@ setupMongo().then(() => {
 
   const app = express();
 
+  const corsConfig = {
+    origin: process.env.FRONT_URL,
+    credential: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  };
+
   app.use(express.json());
-  app.use(
-    cors({
-      origin: process.env.FRONT_URL,
-    }),
-  );
+  app.options('', cors(corsConfig));
+  app.use(cors(corsConfig));
+
   app.use(routes);
   app.use(errorHandler);
 
