@@ -6,7 +6,13 @@ import { setupMongo } from './database';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { routes } from './routes';
 
-setupMongo();
+setupMongo()
+  .then(() => {
+    console.log('MongoDB connected!');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const port = process.env.PORT || 5000;
 
