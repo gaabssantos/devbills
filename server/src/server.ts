@@ -6,27 +6,21 @@ import { setupMongo } from './database';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { routes } from './routes';
 
-setupMongo()
-  .then(() => {
-    console.log('MongoDB connected!');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+setupMongo().then(() => {
+  const port = process.env.PORT || 5000;
 
-const port = process.env.PORT || 5000;
+  const app = express();
 
-const app = express();
+  app.use(express.json());
+  app.use(
+    cors({
+      origin: process.env.FRONT_URL,
+    }),
+  );
+  app.use(routes);
+  app.use(errorHandler);
 
-app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.FRONT_URL,
-  }),
-);
-app.use(routes);
-app.use(errorHandler);
-
-app.listen(port as number, () =>
-  console.log(`🎇 Server has started in port ${port}!`),
-);
+  app.listen(port as number, () =>
+    console.log(`🎇 Server has started in port ${port}!`),
+  );
+});
